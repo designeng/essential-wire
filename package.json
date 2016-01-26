@@ -30,6 +30,7 @@
     "start": "npm run start-dev",
     "start-dev": "npm run build & node ./bin/server.js"
   },
+  "main": "./build/wire.build.js",
   "license": "MIT",
   "dependencies": {
     "meld": "^1.3.2",
