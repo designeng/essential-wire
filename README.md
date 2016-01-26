@@ -1,4 +1,2 @@
-##Notes
-
-REMOVED from scripts:
-"build": "webpack --watch --config webpack.config.js",
+##TODO
++ plugin-base folder removed (compilation errors) - restore later!
