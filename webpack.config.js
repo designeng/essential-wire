@@ -4,7 +4,6 @@ module.exports = {
     context: __dirname,
     entry: [
         __dirname + '/wire/wire.js'
-        // __dirname + '/source/index.js'
     ],
     output: {
         path: __dirname,

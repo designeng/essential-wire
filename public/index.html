@@ -5,7 +5,16 @@
     <title>hot-module-replacement-experiment</title>
 </head>
 <body>
-    <div id="root"></div>
-    <script src="/build/bundle.js"></script>
+    <script src="../build/wire.build.js"></script>
+    <script>
+    wire({
+        test: 123,
+        a: "a"
+    }).then(function(res){
+        console.log("RES:", res);
+    }).otherwise(function(error){
+        console.log("ERROR:", error);
+    });
+    </script>
 </body>
 </html>
