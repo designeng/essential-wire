@@ -1,5 +1,7 @@
-
+var when = require('when');
 
 module.exports = function Log(str){
-    console.log("LOG", str);
+    return when.promise(function(resolve, reject, notify) {
+        resolve(str);
+    });
 }
