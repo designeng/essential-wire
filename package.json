@@ -1,0 +1,44 @@
+{
+  "name": "hot-module-replacement-experiment",
+  "version": "0.0.0",
+  "author": {
+    "name": "Denis Savenok",
+    "email": "denissavenok@gmail.com"
+  },
+  "homepage": "https://github.com/designeng/hot-module-replacement-experiment",
+  "description": "hot-module-replacement-experiment",
+  "keywords": [
+    "webpack",
+    "hot-module-replacement"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/designeng/hot-module-replacement-experiment"
+  },
+  "scripts": {
+    "build": "webpack --watch --config webpack.config.js",
+    "start": "npm run start-dev",
+    "start-dev": "npm run build & node ./bin/server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "meld": "^1.3.2",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "webpack-dev-middleware": "^1.4.0",
+    "webpack-hot-middleware": "^2.6.0",
+    "when": "^3.7.7"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.15",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-syntax-class-properties": "^6.3.13",
+    "babel-plugin-transform-decorators-legacy": "^1.3.3",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-preset-stage-1": "^6.3.13",
+    "express": "^4.13.3",
+    "webpack": "^1.12.9"
+  }
+}
