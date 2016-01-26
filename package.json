@@ -28,7 +28,7 @@
   "scripts": {
     "build": "webpack --watch --config webpack.config.js",
     "start": "npm run start-dev",
-    "start-dev": "npm run build & node ./bin/server.js"
+    "start-dev": "npm run build & node ./server"
   },
   "main": "./build/wire.build.js",
   "license": "MIT",
