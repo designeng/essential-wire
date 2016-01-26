@@ -34,7 +34,4 @@ wire.load = function amdLoad(name, require, done /*, config */) {
 	}
 };
 
-wire['pluginBuilder'] = './builder/rjs';
-wire['cramPlugin'] = './builder/cram';
-
 module.exports = wire;
