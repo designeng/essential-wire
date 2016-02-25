@@ -12,8 +12,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-import asap from './asap';
-const slice = [].slice;
+var asap = require('./asap');
+var slice = [].slice;
 
 /**
  * Create a partial function
@@ -42,13 +42,13 @@ function partial(f, args/*...*/) {
  * @return {Function} composed function
 */
 function compose(funcs) {
-	let first;
+	var first;
 
 	first = funcs[0];
 	funcs = funcs.slice(1);
 
 	return function composed() {
-		let context = this;
+		var context = this;
 		return funcs.reduce(function(result, f) {
 			return asap(result, function(result) {
 				return f.call(context, result);
