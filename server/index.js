@@ -1,3 +1,4 @@
+var fs = require('fs');
 var express = require('express');
 var app = express();
 
@@ -6,6 +7,12 @@ app.set('port', port);
 
 // static pages
 app.use(express.static('./public'));
+
+app.get('/build/wire.build.js', function(req, res, next) {
+    var result = fs.readFileSync('./build/wire.build.js');
+    res.status(200).end(result);
+});
+
 
 /* 404 */
 app.use(function(req, res, next) {
