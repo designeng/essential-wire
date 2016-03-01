@@ -7,21 +7,18 @@
  * @author: Brian Cavalier
  * @author: John Hann
  */
+
 (function(define) { 'use strict';
 define(function(require) {
 
 	var when = require('when');
-
-	var _require = require.context('.', true);
-
-	console.log("_require::::", _require, moduleId);
 
 	// Sniff for the platform's loader
 	return typeof exports == 'object'
 		? function(require) {
 			return function(moduleId) {
 				try {
-					return when.resolve(_require(moduleId));
+					return when.resolve(require(moduleId));
 				} catch(e) {
 					return when.reject(e);
 				}
@@ -37,4 +34,19 @@ define(function(require) {
 
 });
 }(typeof define === 'function' ? define : function(factory) { module.exports = factory(require); }));
+
+
+// var when = require('when');
+
+// module.exports =  function(moduleId) {
+// 	try {
+
+// 		require.ensure([], function(require) {
+// 			var module = require(moduleId);
+// 			return when.resolve(module);
+// 		});
+// 	} catch(e) {
+// 		return when.reject(e);
+// 	}
+// };
 

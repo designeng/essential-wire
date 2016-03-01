@@ -6,10 +6,22 @@
 </head>
 <body>
     <script src="../build/wire.build.js"></script>
+    <script src="/plugins/loadModulesPlugin.js"></script>
     <script>
     wire({
+        $plugins: [
+            loadModulesPlugin
+        ],
         test: 123,
-        a: "a"
+        a: "a",
+        additionalModules: {
+            loadModules: {
+                fromIds: [
+                    '/js/one.spec'
+                ]
+            }
+        }
+
     }).then(function(res){
         console.log("RES:", res);
     }).otherwise(function(error){

@@ -9,8 +9,36 @@
 		root["wire"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	var parentJsonpFunction = window["webpackJsonpwire"];
+/******/ 	window["webpackJsonpwire"] = function webpackJsonpCallback(chunkIds, moreModules) {
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, callbacks = [];
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(installedChunks[chunkId])
+/******/ 				callbacks.push.apply(callbacks, installedChunks[chunkId]);
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			modules[moduleId] = moreModules[moduleId];
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules);
+/******/ 		while(callbacks.length)
+/******/ 			callbacks.shift().call(null, __webpack_require__);
+/******/
+/******/ 	};
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// object to store loaded and loading chunks
+/******/ 	// "0" means "already loaded"
+/******/ 	// Array means "loading", array contains callbacks
+/******/ 	var installedChunks = {
+/******/ 		0:0
+/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -36,6 +64,29 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
+/******/ 		// "0" is the signal for "already loaded"
+/******/ 		if(installedChunks[chunkId] === 0)
+/******/ 			return callback.call(null, __webpack_require__);
+/******/
+/******/ 		// an array means "currently loading".
+/******/ 		if(installedChunks[chunkId] !== undefined) {
+/******/ 			installedChunks[chunkId].push(callback);
+/******/ 		} else {
+/******/ 			// start chunk loading
+/******/ 			installedChunks[chunkId] = [callback];
+/******/ 			var head = document.getElementsByTagName('head')[0];
+/******/ 			var script = document.createElement('script');
+/******/ 			script.type = 'text/javascript';
+/******/ 			script.charset = 'utf-8';
+/******/ 			script.async = true;
+/******/
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "../build/wire.build.js";
+/******/ 			head.appendChild(script);
+/******/ 		}
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -542,7 +593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process) {/** @license MIT License (c) copyright 2010-2014 original author or authors */
+	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process) {/** @license MIT License (c) copyright 2010-2014 original author or authors */
 	/** @author Brian Cavalier */
 	/** @author John Hann */
 	
@@ -2800,9 +2851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	'use strict';
 	
 	/** @license MIT License (c) copyright 2010-2013 original author or authors */
 	
@@ -2813,63 +2862,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @author: Brian Cavalier
 	 * @author: John Hann
 	 */
-	(function (define) {
-		'use strict';
+	// Adapter.js
+	// (function(define) { 'use strict';
+	// define(function(require) {
 	
-		!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	// 	var when = require('when');
 	
-			var when = __webpack_require__(3);
+	// 	// var _require = require.context('.', true);
 	
-			var _require = __webpack_require__(26);
+	// 	// Sniff for the platform's loader
+	// 	return typeof exports == 'object'
+	// 		? function(require) {
+	// 			return function(moduleId) {
+	// 				try {
+	// 					console.log("require::::", require);
+	// 					require.ensure([moduleId], function(require) {
+	// 						var module = require(moduleId);
+	// 						return when.resolve(module);
+	// 					});
+	// 				} catch(e) {
+	// 					return when.reject(e);
+	// 				}
+	// 			};
+	// 		}
+	// 		: function (require) {
+	// 			return function(moduleId) {
+	// 				var deferred = when.defer();
+	// 				require([moduleId], deferred.resolve, deferred.reject);
+	// 				return deferred.promise;
+	// 			};
+	// 		};
 	
-			console.log("_require::::", _require, moduleId);
+	// });
+	// }(typeof define === 'function' ? define : function(factory) { module.exports = factory(require); }));
 	
-			// Sniff for the platform's loader
-			return ( false ? 'undefined' : _typeof(exports)) == 'object' ? function (require) {
-				return function (moduleId) {
-					try {
-						return when.resolve(_require(moduleId));
-					} catch (e) {
-						return when.reject(e);
-					}
-				};
-			} : function (require) {
-				return function (moduleId) {
-					var deferred = when.defer();
-					require([moduleId], deferred.resolve, deferred.reject);
-					return deferred.promise;
-				};
-			};
-		}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	})(__webpack_require__(8));
+	var when = __webpack_require__(3);
+	
+	module.exports = function (moduleId) {
+		try {
+	
+			__webpack_require__.e/* nsure */(1, function (require) {
+				var module = __webpack_require__(26)(moduleId);
+				return when.resolve(module);
+			});
+		} catch (e) {
+			return when.reject(e);
+		}
+	};
 
 /***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./adapter": 25,
-		"./adapter.js": 25,
-		"./moduleId": 27,
-		"./moduleId.js": 27,
-		"./relative": 28,
-		"./relative.js": 28
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 26;
-
-
-/***/ },
+/* 26 */,
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
