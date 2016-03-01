@@ -11,42 +11,26 @@
 (function(define) { 'use strict';
 define(function(require) {
 
-	var when = require('when');
+    var when = require('when');
 
-	// Sniff for the platform's loader
-	return typeof exports == 'object'
-		? function(require) {
-			return function(moduleId) {
-				try {
-					return when.resolve(require(moduleId));
-				} catch(e) {
-					return when.reject(e);
-				}
-			};
-		}
-		: function (require) {
-			return function(moduleId) {
-				var deferred = when.defer();
-				require([moduleId], deferred.resolve, deferred.reject);
-				return deferred.promise;
-			};
-		};
+    // Sniff for the platform's loader
+    return typeof exports == 'object'
+        ? function(require) {
+            return function(moduleId) {
+                try {
+                    return when.resolve(require(moduleId));
+                } catch(e) {
+                    return when.reject(e);
+                }
+            };
+        }
+        : function (require) {
+            return function(moduleId) {
+                var deferred = when.defer();
+                require([moduleId], deferred.resolve, deferred.reject);
+                return deferred.promise;
+            };
+        };
 
 });
 }(typeof define === 'function' ? define : function(factory) { module.exports = factory(require); }));
-
-
-// var when = require('when');
-
-// module.exports =  function(moduleId) {
-// 	try {
-
-// 		require.ensure([], function(require) {
-// 			var module = require(moduleId);
-// 			return when.resolve(module);
-// 		});
-// 	} catch(e) {
-// 		return when.reject(e);
-// 	}
-// };
-
