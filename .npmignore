@@ -1,9 +1,10 @@
+.npmignore
+.gitignore
+.babelrc
 node_modules
 public
 server
 source
-.babelrc
-.gitignore
 index.js
 server.babel.js
 webpack.config.js
