@@ -12,16 +12,12 @@ define(function(require) {
 
 	var when = require('when');
 
-	var _require = require.context('.', true);
-
-	console.log("_require::::", _require, moduleId);
-
 	// Sniff for the platform's loader
 	return typeof exports == 'object'
 		? function(require) {
 			return function(moduleId) {
 				try {
-					return when.resolve(_require(moduleId));
+					return when.resolve(require(moduleId));
 				} catch(e) {
 					return when.reject(e);
 				}
