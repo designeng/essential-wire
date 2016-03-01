@@ -9,36 +9,8 @@
 		root["wire"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	var parentJsonpFunction = window["webpackJsonpwire"];
-/******/ 	window["webpackJsonpwire"] = function webpackJsonpCallback(chunkIds, moreModules) {
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, callbacks = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(installedChunks[chunkId])
-/******/ 				callbacks.push.apply(callbacks, installedChunks[chunkId]);
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			modules[moduleId] = moreModules[moduleId];
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules);
-/******/ 		while(callbacks.length)
-/******/ 			callbacks.shift().call(null, __webpack_require__);
-/******/
-/******/ 	};
-/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// "0" means "already loaded"
-/******/ 	// Array means "loading", array contains callbacks
-/******/ 	var installedChunks = {
-/******/ 		0:0
-/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -64,29 +36,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-/******/ 	// This file contains only the entry chunk.
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
-/******/ 		// "0" is the signal for "already loaded"
-/******/ 		if(installedChunks[chunkId] === 0)
-/******/ 			return callback.call(null, __webpack_require__);
-/******/
-/******/ 		// an array means "currently loading".
-/******/ 		if(installedChunks[chunkId] !== undefined) {
-/******/ 			installedChunks[chunkId].push(callback);
-/******/ 		} else {
-/******/ 			// start chunk loading
-/******/ 			installedChunks[chunkId] = [callback];
-/******/ 			var head = document.getElementsByTagName('head')[0];
-/******/ 			var script = document.createElement('script');
-/******/ 			script.type = 'text/javascript';
-/******/ 			script.charset = 'utf-8';
-/******/ 			script.async = true;
-/******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "../build/wire.build.js";
-/******/ 			head.appendChild(script);
-/******/ 		}
-/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -125,7 +74,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	wire.version = '0.10.11';
 	
-	rootOptions = { require: __webpack_require__(62) };
+	rootOptions = { require: __webpack_require__(61) };
 	
 	function wire(spec, options) {
 	
@@ -181,9 +130,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			when = __webpack_require__(3);
 			mixin = __webpack_require__(24).mixin;
 			loaderAdapter = __webpack_require__(25);
-			relativeLoader = __webpack_require__(28);
-			Container = __webpack_require__(29);
-			specUtils = __webpack_require__(45);
+			relativeLoader = __webpack_require__(26);
+			Container = __webpack_require__(28);
+			specUtils = __webpack_require__(44);
 	
 			/**
 	   * Creates a new context from the supplied specs, with the supplied
@@ -241,7 +190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *  the new module loader will inherit, if provided.
 	   * @return {Object} module loader with load() and merge() methods
 	   */
-			var _require = __webpack_require__(59);
+			var _require = __webpack_require__(58);
 			function createSpecLoader(parentLoader, platformLoader) {
 				var loadModule = typeof platformLoader == 'function' ? loaderAdapter(platformLoader) : parentLoader || loaderAdapter(_require);
 	
@@ -2851,7 +2800,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
 	/** @license MIT License (c) copyright 2010-2013 original author or authors */
 	
@@ -2862,56 +2813,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @author: Brian Cavalier
 	 * @author: John Hann
 	 */
-	// Adapter.js
-	// (function(define) { 'use strict';
-	// define(function(require) {
 	
-	// 	var when = require('when');
+	(function (define) {
+	    'use strict';
 	
-	// 	// var _require = require.context('.', true);
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	
-	// 	// Sniff for the platform's loader
-	// 	return typeof exports == 'object'
-	// 		? function(require) {
-	// 			return function(moduleId) {
-	// 				try {
-	// 					console.log("require::::", require);
-	// 					require.ensure([moduleId], function(require) {
-	// 						var module = require(moduleId);
-	// 						return when.resolve(module);
-	// 					});
-	// 				} catch(e) {
-	// 					return when.reject(e);
-	// 				}
-	// 			};
-	// 		}
-	// 		: function (require) {
-	// 			return function(moduleId) {
-	// 				var deferred = when.defer();
-	// 				require([moduleId], deferred.resolve, deferred.reject);
-	// 				return deferred.promise;
-	// 			};
-	// 		};
+	        var when = __webpack_require__(3);
 	
-	// });
-	// }(typeof define === 'function' ? define : function(factory) { module.exports = factory(require); }));
-	
-	var when = __webpack_require__(3);
-	
-	module.exports = function (moduleId) {
-		try {
-	
-			__webpack_require__.e/* nsure */(1, function (require) {
-				var module = __webpack_require__(26)(moduleId);
-				return when.resolve(module);
-			});
-		} catch (e) {
-			return when.reject(e);
-		}
-	};
+	        // Sniff for the platform's loader
+	        return ( false ? 'undefined' : _typeof(exports)) == 'object' ? function (require) {
+	            return function (moduleId) {
+	                try {
+	                    return when.resolve(require(moduleId));
+	                } catch (e) {
+	                    return when.reject(e);
+	                }
+	            };
+	        } : function (require) {
+	            return function (moduleId) {
+	                var deferred = when.defer();
+	                require([moduleId], deferred.resolve, deferred.reject);
+	                return deferred.promise;
+	            };
+	        };
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	})(__webpack_require__(8));
 
 /***/ },
-/* 26 */,
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	/** @license MIT License (c) copyright 2010-2013 original author or authors */
+	
+	/**
+	 * Licensed under the MIT License at:
+	 * http://www.opensource.org/licenses/mit-license.php
+	 *
+	 * @author: Brian Cavalier
+	 * @author: John Hann
+	 */
+	(function (define) {
+		'use strict';
+	
+		!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	
+			var mid = __webpack_require__(27);
+	
+			return function relativeLoader(loader, referenceId) {
+				referenceId = mid.base(referenceId);
+				return function (moduleId) {
+					return loader(mid.resolve(referenceId, moduleId));
+				};
+			};
+		}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	})(__webpack_require__(8));
+
+/***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3034,37 +2994,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	/** @license MIT License (c) copyright 2010-2013 original author or authors */
-	
-	/**
-	 * Licensed under the MIT License at:
-	 * http://www.opensource.org/licenses/mit-license.php
-	 *
-	 * @author: Brian Cavalier
-	 * @author: John Hann
-	 */
-	(function (define) {
-		'use strict';
-	
-		!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	
-			var mid = __webpack_require__(27);
-	
-			return function relativeLoader(loader, referenceId) {
-				referenceId = mid.base(referenceId);
-				return function (moduleId) {
-					return loader(mid.resolve(referenceId, moduleId));
-				};
-			};
-		}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	})(__webpack_require__(8));
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /** @license MIT License (c) copyright B Cavalier & J Hann */
@@ -3078,7 +3007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _when2 = _interopRequireDefault(_when);
 	
-	var _advice = __webpack_require__(30);
+	var _advice = __webpack_require__(29);
 	
 	var _advice2 = _interopRequireDefault(_advice);
 	
@@ -3086,27 +3015,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _object2 = _interopRequireDefault(_object);
 	
-	var _WireContext = __webpack_require__(31);
+	var _WireContext = __webpack_require__(30);
 	
 	var _WireContext2 = _interopRequireDefault(_WireContext);
 	
-	var _scope = __webpack_require__(32);
+	var _scope = __webpack_require__(31);
 	
 	var _scope2 = _interopRequireDefault(_scope);
 	
-	var _registry = __webpack_require__(42);
+	var _registry = __webpack_require__(41);
 	
 	var _registry2 = _interopRequireDefault(_registry);
 	
-	var _defaultPlugins = __webpack_require__(50);
+	var _defaultPlugins = __webpack_require__(49);
 	
 	var _defaultPlugins2 = _interopRequireDefault(_defaultPlugins);
 	
-	var _DirectedGraph = __webpack_require__(46);
+	var _DirectedGraph = __webpack_require__(45);
 	
 	var _DirectedGraph2 = _interopRequireDefault(_DirectedGraph);
 	
-	var _trackInflightRefs = __webpack_require__(57);
+	var _trackInflightRefs = __webpack_require__(56);
 	
 	var _trackInflightRefs2 = _interopRequireDefault(_trackInflightRefs);
 	
@@ -3244,7 +3173,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Container;
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3346,7 +3275,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -3388,7 +3317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -3410,19 +3339,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			var when, defer, sequence, array, object, loader, Map, ComponentFactory, Lifecycle, Resolver, WireProxy, PluginRegistry, undef, specUtils, DirectedGraph, cyclesTracker;
 	
 			when = __webpack_require__(3);
-			sequence = __webpack_require__(33);
-			array = __webpack_require__(34);
+			sequence = __webpack_require__(32);
+			array = __webpack_require__(33);
 			object = __webpack_require__(24);
-			Map = __webpack_require__(35);
+			Map = __webpack_require__(34);
 			loader = __webpack_require__(25);
-			ComponentFactory = __webpack_require__(36);
-			Lifecycle = __webpack_require__(40);
-			Resolver = __webpack_require__(41);
-			WireProxy = __webpack_require__(37);
-			PluginRegistry = __webpack_require__(42);
-			specUtils = __webpack_require__(45);
-			DirectedGraph = __webpack_require__(46);
-			cyclesTracker = __webpack_require__(47);
+			ComponentFactory = __webpack_require__(35);
+			Lifecycle = __webpack_require__(39);
+			Resolver = __webpack_require__(40);
+			WireProxy = __webpack_require__(36);
+			PluginRegistry = __webpack_require__(41);
+			specUtils = __webpack_require__(44);
+			DirectedGraph = __webpack_require__(45);
+			cyclesTracker = __webpack_require__(46);
 	
 			defer = when.defer;
 	
@@ -3916,7 +3845,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2011-2013 original author or authors */
@@ -3968,7 +3897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -4032,7 +3961,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -4109,7 +4038,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -4133,8 +4062,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 			when = __webpack_require__(3);
 			object = __webpack_require__(24);
-			WireProxy = __webpack_require__(37);
-			ObjectProxy = __webpack_require__(38);
+			WireProxy = __webpack_require__(36);
+			ObjectProxy = __webpack_require__(37);
 	
 			function ComponentFactory(lifecycle, plugins, pluginApi) {
 				this.plugins = plugins;
@@ -4277,7 +4206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -4299,7 +4228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var object, array;
 	
 			object = __webpack_require__(24);
-			array = __webpack_require__(34);
+			array = __webpack_require__(33);
 	
 			/**
 	   * A base proxy for all components that wire creates.  It allows wire's
@@ -4485,7 +4414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -4507,10 +4436,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 			var WireProxy, extend, before, meld, _advise, superDestroy;
 	
-			WireProxy = __webpack_require__(37);
+			WireProxy = __webpack_require__(36);
 			extend = __webpack_require__(24).extend;
-			before = __webpack_require__(30).before;
-			meld = __webpack_require__(39);
+			before = __webpack_require__(29).before;
+			meld = __webpack_require__(38);
 	
 			// FIXME: Remove support for meld.add after deprecation period
 			_advise = typeof meld === 'function' ? meld : meld.add;
@@ -4544,7 +4473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2011-2013 original author or authors */
@@ -5148,7 +5077,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5271,7 +5200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5389,7 +5318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5410,10 +5339,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			var when, array, object, priority, instantiate, nsKey, nsSeparator;
 	
 			when = __webpack_require__(3);
-			array = __webpack_require__(34);
+			array = __webpack_require__(33);
 			object = __webpack_require__(24);
-			priority = __webpack_require__(43);
-			instantiate = __webpack_require__(44);
+			priority = __webpack_require__(42);
+			instantiate = __webpack_require__(43);
 	
 			nsKey = '$ns';
 			nsSeparator = ':';
@@ -5533,7 +5462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5579,7 +5508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5672,7 +5601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5719,7 +5648,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5820,7 +5749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5837,8 +5766,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 			var findStronglyConnected, formatCycles;
 	
-			findStronglyConnected = __webpack_require__(48);
-			formatCycles = __webpack_require__(49);
+			findStronglyConnected = __webpack_require__(47);
+			formatCycles = __webpack_require__(48);
 	
 			/**
 	   * Make sure that the new name doesn't introduce a cycle.
@@ -5880,7 +5809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -5997,7 +5926,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6026,7 +5955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6038,12 +5967,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	(function (define) {
 		!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	
-			return [__webpack_require__(51), __webpack_require__(52)];
+			return [__webpack_require__(50), __webpack_require__(51)];
 		}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	})(__webpack_require__(8));
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6175,7 +6104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6201,10 +6130,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 			when = __webpack_require__(3);
 			object = __webpack_require__(24);
-			functional = __webpack_require__(53);
-			pipeline = __webpack_require__(55);
-			instantiate = __webpack_require__(44);
-			createInvoker = __webpack_require__(56);
+			functional = __webpack_require__(52);
+			pipeline = __webpack_require__(54);
+			instantiate = __webpack_require__(43);
+			createInvoker = __webpack_require__(55);
 	
 			whenAll = when.all;
 	
@@ -6485,7 +6414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6504,7 +6433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * http://www.opensource.org/licenses/mit-license.php
 	 */
 	
-	var asap = __webpack_require__(54);
+	var asap = __webpack_require__(53);
 	var slice = [].slice;
 	
 	/**
@@ -6555,7 +6484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6591,7 +6520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6614,7 +6543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var when, compose, pipelineSplitRx;
 	
 			when = __webpack_require__(3);
-			compose = __webpack_require__(53).compose;
+			compose = __webpack_require__(52).compose;
 			pipelineSplitRx = /\s*\|\s*/;
 	
 			return function pipeline(proxy, composeString, wire) {
@@ -6679,7 +6608,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 56 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6696,7 +6625,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 57 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6710,9 +6639,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 			var timeout, findStronglyConnected, formatCycles, refCycleCheckTimeout;
 	
-			timeout = __webpack_require__(58);
-			findStronglyConnected = __webpack_require__(48);
-			formatCycles = __webpack_require__(49);
+			timeout = __webpack_require__(57);
+			findStronglyConnected = __webpack_require__(47);
+			formatCycles = __webpack_require__(48);
 	
 			refCycleCheckTimeout = 5000;
 	
@@ -6788,7 +6717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2011-2013 original author or authors */
@@ -6821,44 +6750,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./ComponentFactory.js": 36,
-		"./Container.js": 29,
-		"./Map.js": 35,
-		"./ObjectProxy.js": 38,
-		"./WireContext.js": 31,
-		"./WireProxy.js": 37,
-		"./advice.js": 30,
-		"./array.js": 34,
-		"./asap.js": 54,
-		"./connection.js": 60,
+		"./ComponentFactory.js": 35,
+		"./Container.js": 28,
+		"./Map.js": 34,
+		"./ObjectProxy.js": 37,
+		"./WireContext.js": 30,
+		"./WireProxy.js": 36,
+		"./advice.js": 29,
+		"./array.js": 33,
+		"./asap.js": 53,
+		"./connection.js": 59,
 		"./context.js": 2,
-		"./dom/base.js": 61,
-		"./functional.js": 53,
-		"./graph/DirectedGraph.js": 46,
-		"./graph/cyclesTracker.js": 47,
-		"./graph/formatCycles.js": 49,
-		"./graph/tarjan.js": 48,
-		"./graph/trackInflightRefs.js": 57,
-		"./instantiate.js": 44,
-		"./invoker.js": 56,
-		"./lifecycle.js": 40,
+		"./dom/base.js": 60,
+		"./functional.js": 52,
+		"./graph/DirectedGraph.js": 45,
+		"./graph/cyclesTracker.js": 46,
+		"./graph/formatCycles.js": 48,
+		"./graph/tarjan.js": 47,
+		"./graph/trackInflightRefs.js": 56,
+		"./instantiate.js": 43,
+		"./invoker.js": 55,
+		"./lifecycle.js": 39,
 		"./loader/adapter.js": 25,
 		"./loader/moduleId.js": 27,
-		"./loader/relative.js": 28,
+		"./loader/relative.js": 26,
 		"./object.js": 24,
-		"./pipeline.js": 55,
-		"./plugin/basePlugin.js": 52,
-		"./plugin/defaultPlugins.js": 50,
-		"./plugin/priority.js": 43,
-		"./plugin/registry.js": 42,
-		"./plugin/wirePlugin.js": 51,
-		"./resolver.js": 41,
-		"./scope.js": 32,
-		"./specUtils.js": 45
+		"./pipeline.js": 54,
+		"./plugin/basePlugin.js": 51,
+		"./plugin/defaultPlugins.js": 49,
+		"./plugin/priority.js": 42,
+		"./plugin/registry.js": 41,
+		"./plugin/wirePlugin.js": 50,
+		"./resolver.js": 40,
+		"./scope.js": 31,
+		"./specUtils.js": 44
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -6871,11 +6800,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 59;
+	webpackContext.id = 58;
 
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -6921,8 +6850,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			var when, array, pipeline;
 	
 			when = __webpack_require__(3);
-			array = __webpack_require__(34);
-			pipeline = __webpack_require__(55);
+			array = __webpack_require__(33);
+			pipeline = __webpack_require__(54);
 	
 			return {
 				parse: parse,
@@ -7103,7 +7032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -7126,8 +7055,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 			var WireProxy, priority, classRx, trimLeadingRx, splitClassNamesRx, nodeProxyInvoke;
 	
-			WireProxy = __webpack_require__(37);
-			priority = __webpack_require__(43);
+			WireProxy = __webpack_require__(36);
+			priority = __webpack_require__(42);
 	
 			classRx = '(\\s+|^)(classNames)(\\b(?![\\-_])|$)';
 			trimLeadingRx = /^\s+/;
@@ -7401,78 +7330,78 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(__webpack_require__(8));
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./lib/ComponentFactory": 36,
-		"./lib/ComponentFactory.js": 36,
-		"./lib/Container": 29,
-		"./lib/Container.js": 29,
-		"./lib/Map": 35,
-		"./lib/Map.js": 35,
-		"./lib/ObjectProxy": 38,
-		"./lib/ObjectProxy.js": 38,
-		"./lib/WireContext": 31,
-		"./lib/WireContext.js": 31,
-		"./lib/WireProxy": 37,
-		"./lib/WireProxy.js": 37,
-		"./lib/advice": 30,
-		"./lib/advice.js": 30,
-		"./lib/array": 34,
-		"./lib/array.js": 34,
-		"./lib/asap": 54,
-		"./lib/asap.js": 54,
-		"./lib/connection": 60,
-		"./lib/connection.js": 60,
+		"./lib/ComponentFactory": 35,
+		"./lib/ComponentFactory.js": 35,
+		"./lib/Container": 28,
+		"./lib/Container.js": 28,
+		"./lib/Map": 34,
+		"./lib/Map.js": 34,
+		"./lib/ObjectProxy": 37,
+		"./lib/ObjectProxy.js": 37,
+		"./lib/WireContext": 30,
+		"./lib/WireContext.js": 30,
+		"./lib/WireProxy": 36,
+		"./lib/WireProxy.js": 36,
+		"./lib/advice": 29,
+		"./lib/advice.js": 29,
+		"./lib/array": 33,
+		"./lib/array.js": 33,
+		"./lib/asap": 53,
+		"./lib/asap.js": 53,
+		"./lib/connection": 59,
+		"./lib/connection.js": 59,
 		"./lib/context": 2,
 		"./lib/context.js": 2,
-		"./lib/dom/base": 61,
-		"./lib/dom/base.js": 61,
-		"./lib/functional": 53,
-		"./lib/functional.js": 53,
-		"./lib/graph/DirectedGraph": 46,
-		"./lib/graph/DirectedGraph.js": 46,
-		"./lib/graph/cyclesTracker": 47,
-		"./lib/graph/cyclesTracker.js": 47,
-		"./lib/graph/formatCycles": 49,
-		"./lib/graph/formatCycles.js": 49,
-		"./lib/graph/tarjan": 48,
-		"./lib/graph/tarjan.js": 48,
-		"./lib/graph/trackInflightRefs": 57,
-		"./lib/graph/trackInflightRefs.js": 57,
-		"./lib/instantiate": 44,
-		"./lib/instantiate.js": 44,
-		"./lib/invoker": 56,
-		"./lib/invoker.js": 56,
-		"./lib/lifecycle": 40,
-		"./lib/lifecycle.js": 40,
+		"./lib/dom/base": 60,
+		"./lib/dom/base.js": 60,
+		"./lib/functional": 52,
+		"./lib/functional.js": 52,
+		"./lib/graph/DirectedGraph": 45,
+		"./lib/graph/DirectedGraph.js": 45,
+		"./lib/graph/cyclesTracker": 46,
+		"./lib/graph/cyclesTracker.js": 46,
+		"./lib/graph/formatCycles": 48,
+		"./lib/graph/formatCycles.js": 48,
+		"./lib/graph/tarjan": 47,
+		"./lib/graph/tarjan.js": 47,
+		"./lib/graph/trackInflightRefs": 56,
+		"./lib/graph/trackInflightRefs.js": 56,
+		"./lib/instantiate": 43,
+		"./lib/instantiate.js": 43,
+		"./lib/invoker": 55,
+		"./lib/invoker.js": 55,
+		"./lib/lifecycle": 39,
+		"./lib/lifecycle.js": 39,
 		"./lib/loader/adapter": 25,
 		"./lib/loader/adapter.js": 25,
 		"./lib/loader/moduleId": 27,
 		"./lib/loader/moduleId.js": 27,
-		"./lib/loader/relative": 28,
-		"./lib/loader/relative.js": 28,
+		"./lib/loader/relative": 26,
+		"./lib/loader/relative.js": 26,
 		"./lib/object": 24,
 		"./lib/object.js": 24,
-		"./lib/pipeline": 55,
-		"./lib/pipeline.js": 55,
-		"./lib/plugin/basePlugin": 52,
-		"./lib/plugin/basePlugin.js": 52,
-		"./lib/plugin/defaultPlugins": 50,
-		"./lib/plugin/defaultPlugins.js": 50,
-		"./lib/plugin/priority": 43,
-		"./lib/plugin/priority.js": 43,
-		"./lib/plugin/registry": 42,
-		"./lib/plugin/registry.js": 42,
-		"./lib/plugin/wirePlugin": 51,
-		"./lib/plugin/wirePlugin.js": 51,
-		"./lib/resolver": 41,
-		"./lib/resolver.js": 41,
-		"./lib/scope": 32,
-		"./lib/scope.js": 32,
-		"./lib/specUtils": 45,
-		"./lib/specUtils.js": 45
+		"./lib/pipeline": 54,
+		"./lib/pipeline.js": 54,
+		"./lib/plugin/basePlugin": 51,
+		"./lib/plugin/basePlugin.js": 51,
+		"./lib/plugin/defaultPlugins": 49,
+		"./lib/plugin/defaultPlugins.js": 49,
+		"./lib/plugin/priority": 42,
+		"./lib/plugin/priority.js": 42,
+		"./lib/plugin/registry": 41,
+		"./lib/plugin/registry.js": 41,
+		"./lib/plugin/wirePlugin": 50,
+		"./lib/plugin/wirePlugin.js": 50,
+		"./lib/resolver": 40,
+		"./lib/resolver.js": 40,
+		"./lib/scope": 31,
+		"./lib/scope.js": 31,
+		"./lib/specUtils": 44,
+		"./lib/specUtils.js": 44
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -7485,7 +7414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 62;
+	webpackContext.id = 61;
 
 
 /***/ }
