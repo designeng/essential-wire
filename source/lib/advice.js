@@ -8,7 +8,22 @@
  * @author: John Hann
  */
 
-	import when from 'when';
+(function(define) { 'use strict';
+define(function(require) {
+
+	var when;
+
+	when = require('when');
+
+	// Very simple advice functions for internal wire use only.
+	// This is NOT a replacement for meld.  These advices stack
+	// differently and will not be as efficient.
+	return {
+		before: before,
+		after: after,
+		beforeAsync: beforeAsync,
+		afterAsync: afterAsync
+	};
 
 	/**
 	 * Execute advice before f, passing same arguments to both, and
@@ -17,7 +32,7 @@
 	 * @param {function} advice function to execute before f
 	 * @returns {function} advised function
 	 */
-	const before = (f, advice) => {
+	function before(f, advice) {
 		return function() {
 			advice.apply(this, arguments);
 			return f.apply(this, arguments);
@@ -30,7 +45,7 @@
 	 * @param {function} advice function to execute after f
 	 * @returns {function} advised function
 	 */
-	const after = (f, advice) => {
+	function after(f, advice) {
 		return function() {
 			return advice.call(this, f.apply(this, arguments));
 		};
@@ -43,14 +58,17 @@
 	 * @param {function} advice function to execute before f
 	 * @returns {function} advised function which always returns a promise
 	 */
-	const beforeAsync = (f, advice) => {
+	function beforeAsync(f, advice) {
 		return function() {
-			let args = arguments;
+			var self, args;
 
-			return when(args, () => {
-				return advice.apply(this, args);
-			}).then(() => {
-				return f.apply(this, args);
+			self = this;
+			args = arguments;
+
+			return when(args, function() {
+				return advice.apply(self, args);
+			}).then(function() {
+				return f.apply(self, args);
 			});
 		};
 	}
@@ -62,22 +80,18 @@
 	 * @param {function} advice function to execute after f
 	 * @returns {function} advised function which always returns a promise
 	 */
-	const afterAsync = (f, advice) => {
+	function afterAsync(f, advice) {
 		return function() {
-			return when(arguments, (args) => {
-				return f.apply(this, args);
-			}).then((result) => {
-				return advice.call(this, result);
+			var self = this;
+
+			return when(arguments, function(args) {
+				return f.apply(self, args);
+			}).then(function(result) {
+				return advice.call(self, result);
 			});
 		};
 	}
 
-	// Very simple advice functions for internal wire use only.
-	// This is NOT a replacement for meld.  These advices stack
-	// differently and will not be as efficient.
-	export default {
-		before: before,
-		after: after,
-		beforeAsync: beforeAsync,
-		afterAsync: afterAsync
-	};
+
+});
+}(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
