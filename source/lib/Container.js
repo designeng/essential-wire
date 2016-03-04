@@ -5,21 +5,25 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-	import when from 'when';
-	import advice from './advice';
-	import object from './object';
-	import WireContext from './WireContext';
-	import Scope from './scope';
-	import PluginRegistry from './plugin/registry';
-	import defaultPlugins from './plugin/defaultPlugins';
-	import DirectedGraph from './graph/DirectedGraph';
-	import trackInflightRefs from './graph/trackInflightRefs';
+(function(define){ 'use strict';
+define(function(require) {
 
-	let undef;
+	var when, advice, object, WireContext, Scope,
+		PluginRegistry, defaultPlugins,
+		DirectedGraph, trackInflightRefs, slice, scopeProto, undef;
 
-	let slice = Array.prototype.slice;
+	when = require('when');
+	advice = require('./advice');
+	object = require('./object');
+	WireContext = require('./WireContext');
+	Scope = require('./scope');
+	PluginRegistry = require('./plugin/registry');
+	defaultPlugins = require('./plugin/defaultPlugins');
+	DirectedGraph = require('./graph/DirectedGraph');
+	trackInflightRefs = require('./graph/trackInflightRefs');
+	slice = Array.prototype.slice;
 
-	let scopeProto = Scope.prototype;
+	scopeProto = Scope.prototype;
 
 	function Container() {
 		Scope.apply(this, arguments);
@@ -167,5 +171,7 @@
 		)
 	});
 
+	return Container;
 
-	module.exports = Container;
+});
+}(typeof define === 'function' ? define : function(factory) { module.exports = factory(require); }));
