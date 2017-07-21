@@ -377,8 +377,15 @@ define(function(require) {
 				created = this._createComponent(component);
 
 			} else {
-				// Plain value
-				created = when.resolve(spec);
+				// Plain value. Transform to factorized component.
+				component.spec = {
+					create: {
+						module: function() {
+							return spec;
+						}
+			        }
+				}
+				created = this._createComponent(component);
 			}
 
 			return created;
